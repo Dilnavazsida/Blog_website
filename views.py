@@ -58,3 +58,21 @@ def my_post(request):
     context = {'posts':Post.objects.filter(author = request.user)}
     return render(request,'mypost.html',context)
 
+@login_required
+def edit_post(request,post_id):
+
+    post = get_object_or_404(Post,id=post_id)
+
+    # only allow the owner to edit 
+
+    if post.author != request.user:
+        return redirect('home')
+    
+    if request.method == 'POST':
+        post.title = request.POST.get('title')
+        post.content = request.POST.get('content')
+        post.save()
+        return redirect('my_post')
+
+    return render(request, 'edit_post.html', {'post': post})
+
