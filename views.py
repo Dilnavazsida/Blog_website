@@ -76,3 +76,15 @@ def edit_post(request,post_id):
 
     return render(request, 'edit_post.html', {'post': post})
 
+def search_post(request):
+    query = request.GET['query']
+    if len(query)>50:
+        allPosts = Post.objects.none()
+    else:
+        allPostsTitle = Post.objects.filter(title__icontains=query)
+        allPostsContent = Post.objects.filter(content__icontains=query)
+        allPosts = allPostsTitle.union(allPostsContent)
+    if allPosts.count() == 0:
+        messages.warning(request,"No search result found please refine your search")
+    return render(request,'search_post.html',{'posts':allPosts,'query':query})
+
