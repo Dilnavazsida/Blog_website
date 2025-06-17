@@ -88,3 +88,12 @@ def search_post(request):
         messages.warning(request,"No search result found please refine your search")
     return render(request,'search_post.html',{'posts':allPosts,'query':query})
 
+def delete_post(request,post_id):
+
+    post = get_object_or_404(Post,id=post_id)
+    if post.author == request.user:
+        post.delete()
+        messages.success(request, "✅ Post deleted successfully.")
+    else:
+        messages.error(request, "❌ You are not allowed to delete this post.")
+    return redirect('show_post')
