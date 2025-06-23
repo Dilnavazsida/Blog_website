@@ -1,0 +1,189 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+          .navbar {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .navbar .form-control,
+    .navbar .btn {
+        height: 38px; /* Ensures same height as nav items */
+        font-size: 0.9rem;
+        margin: 0;
+    }
+
+    .navbar .navbar-text {
+        font-size: 1rem;
+        padding-top: 0.2rem;
+    }
+
+    .navbar form {
+        margin: 0;
+    }
+
+    /* for search button start */
+        .btn-custom {
+        background-color: transparent;
+        color: white;
+        border: 2px solid white;
+        transition: 0.3s;
+      }
+
+      .btn-custom:hover {
+        background-color: white;
+        color: black;
+        border-color: white;
+      }
+    /* for search button  end*/
+    </style>
+
+    
+
+</head>
+
+<body>
+    <!-- navbar start -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="border-bottom-left-radius:10px;border-bottom-right-radius:10px;">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'home' %}">MyBlog</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Left side -->
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'my_post' %}">My Posts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'add_post' %}">Add Post</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'show_post' %}">Show Post</a>
+                </li>
+            </ul>
+
+            <!-- Right side: username, search bar, logout -->
+            <div class="d-flex align-items-center gap-3">
+                <span class="navbar-text text-white">
+                    Hello, {{ request.user.username }}
+                </span>
+
+                <!-- Search bar -->
+                <form class="d-flex align-items-center" role="search" method="get" action="{% url 'search_post' %}">
+                    
+                    <input class="form-control me-2" name="query" id="query" type="search" placeholder="Search Blogs Here" aria-label="Search">
+                    <button class="btn btn-custom" type="submit">Search</button>
+                </form>
+
+                <!-- Logout -->
+                <a class="nav-link text-danger" href="{% url 'logOut' %}">Logout</a>
+            </div>
+        </div>
+    </div>
+</nav>
+
+
+    <!-- navbar end -->
+   
+    <!-- body content start-->
+ {% if request.path == '/' %}
+<div class="container py-5">
+
+  <!-- Hero Section -->
+  <div class="text-center mb-5">
+    <h1 class="display-5 fw-bold">Welcome to MyBlog</h1>
+    <p class="text-muted fs-5">A place to share your thoughts, ideas, and knowledge with the world.</p>
+    <a href="{% url 'add_post' %}" class="btn btn-outline-dark px-4 py-2 mt-2">Write Your First Post</a>
+  </div>
+
+  <!-- Recent Posts -->
+  <div class="mb-5">
+  <h3 class="mb-4">📂 Explore Topics</h3>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="bg-white p-4 rounded shadow-sm text-center">
+        <h5>💻 Technology</h5>
+        <p class="text-muted">Latest trends, tutorials, and coding tips.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="bg-white p-4 rounded shadow-sm text-center">
+        <h5>🧠 Personal Growth</h5>
+        <p class="text-muted">Habits, productivity, and mindset ideas.</p>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="bg-white p-4 rounded shadow-sm text-center">
+        <h5>✈️ Travel</h5>
+        <p class="text-muted">Stories and guides from around the world.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- About Section -->
+  <div class="bg-light p-4 rounded shadow-sm mb-5">
+    <h4>📚 About This Blog</h4>
+    <p class="text-muted">
+      MyBlog is a simple and elegant platform for sharing personal stories, tutorials, opinions, or anything you care about.
+      Whether you're a student, developer, writer, or dreamer — this space is yours.
+    </p>
+  </div>
+
+  <!-- Call to Action -->
+  <div class="text-center">
+    <h5>Want to contribute your voice?</h5>
+    <a href="{% url 'add_post' %}" class="btn btn-success mt-2">Create a Post</a>
+  </div>
+
+</div>
+{% endif %}
+
+
+
+
+    <!-- body content end-->
+
+
+    <!-- form start  -->
+<div class="container">
+    {% block add_post %}
+    {% endblock %}
+  </div>
+    <!-- form end   -->
+
+     <!-- show post  start -->
+    <div class="container">
+        {% block show_post %}
+        {% endblock %}
+    </div>
+    <!--  show post  end  -->
+
+    <!-- my post start -->
+    <div class="container">
+        {% block my_post %}
+        {% endblock %}
+    </div>
+
+    <!-- my post end -->
+    
+
+    <!-- search post -->
+     <div class="container">
+        {% block search_post %}
+        {% endblock %}
+    </div>
+    <!-- search post end -->
+</body>
+
+</html>
