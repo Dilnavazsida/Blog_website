@@ -2,7 +2,8 @@ from django.contrib import admin
 from django.urls import path,include
 from blog_app import views
 urlpatterns = [
-    path('',views.index,name="home"),
+    path('',views.singIn,name="index"),
+    path('index/', views.index, name="home"),
     path('singIn/',views.singIn,name="singIn"),
     path('logIn/',views.logIn,name="logIn"),
     path('logOut/',views.logOut,name="logOut"),
@@ -12,6 +13,4 @@ urlpatterns = [
     path('edit/<int:post_id>/post',views.edit_post,name='edit_post'),
     path('search_post/',views.search_post,name="search_post"),
     path('delete/<int:post_id>/post',views.delete_post,name='delete_post'),
-
-  
 ]
