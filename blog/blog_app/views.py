@@ -15,24 +15,27 @@ from django.core.validators import validate_email
 # Create your views here.
 @login_required(login_url='logIn')
 def index(request):
-    return render(request, 'home.html')
+    return render(request, 'home.html',{'is_home': True})
 
-# old sing in 
+# old sing in
 
 # def singIn(request):
 #     if request.method == 'POST':
 #         fname = request.POST.get('fname')
 #         lname =request.POST.get('lname')
-#         username = request.POST.get('username') 
+#         username = request.POST.get('username')
 #         email = request.POST.get('email')
 #         password = request.POST.get('password')
 #         my_user = User.objects.create_user(username,email,password)
 #         my_user.save()
-#         return redirect('logIn') 
+#         return redirect('logIn')
 #     return render(request,'singin.html')
 
 # updated sing in validations
 def singIn(request):
+    if request.user.is_authenticated:
+        return redirect('home')
+
     if request.method == 'POST':
         fname = request.POST.get('fname', '').strip()
         lname = request.POST.get('lname', '').strip()
@@ -103,8 +106,11 @@ def singIn(request):
     return render(request, 'singin.html')
 
 def logIn(request):
+    if request.user.is_authenticated:
+         return redirect('home')
+
     if request.method == 'POST':
-        username = request.POST.get('username') 
+        username = request.POST.get('username')
         email = request.POST.get('email')
         password = request.POST.get('password')
 
@@ -112,21 +118,21 @@ def logIn(request):
         if user is not None:
             login(request,user)
                 #  send email to the user
-            send_mail(
-                    subject='Welcome to Blog Website!',
-                    message=(
-                        f"Hello {user.username},\n\n"
-                        f"Welcome back! You have successfully logged in to the Blog Website.\n"
-                        f"We're glad to see you again 😊\n\n"
-                        f"Keep writing, reading, and enjoying great content!\n\n"
-                        f"Best regards,\n"
-                        f"The Blog Website Team"
-                    ),
-                    from_email='navazdil07@gmail.com',  # your email address
-                    recipient_list=[user.email],
-                    fail_silently=False,
-                )
-            return redirect('home')
+            # send_mail(
+            #         subject='Welcome to Blog Website!',
+            #         message=(
+            #             f"Hello {user.username},\n\n"
+            #             f"Welcome back! You have successfully logged in to the Blog Website.\n"
+            #             f"We're glad to see you again 😊\n\n"
+            #             f"Keep writing, reading, and enjoying great content!\n\n"
+            #             f"Best regards,\n"
+            #             f"The Blog Website Team"
+            #         ),
+            #         from_email='navazdil07@gmail.com',  # your email address
+            #         recipient_list=[user.email],
+            #         fail_silently=False,
+            #     )
+            return redirect('show_post')
                 #  send email to the user end
         else:
             return redirect("logIn")
@@ -145,12 +151,12 @@ def add_post(request):
         title = request.POST.get('title')
         content = request.POST.get('content')
 
-        # validate if user not fill both field 
+        # validate if user not fill both field
 
         if not title or not content:
             messages.warning(request, "Both title and content are required.")
             return render(request, 'add_post.html')
-        
+
         npost = models.Post(title=title,content=content,author = request.user)
         npost.save()
 
@@ -168,16 +174,16 @@ def edit_post(request,post_id):
 
     post = get_object_or_404(Post,id=post_id)
 
-    # only allow the owner to edit 
+    # only allow the owner to edit
 
     if post.author != request.user:
         return redirect('home')
-    
+
     if request.method == 'POST':
         post.title = request.POST.get('title')
         post.content = request.POST.get('content')
         post.save()
-        return redirect('my_post')           
+        return redirect('my_post')
 
     return render(request, 'edit_post.html', {'post': post})
 
@@ -204,4 +210,3 @@ def delete_post(request,post_id):
     return redirect('show_post')
 
 
-    
