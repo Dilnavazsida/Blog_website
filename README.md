@@ -29,3 +29,26 @@ Welcome to **MyBlog**, a web application where users can read, write, and share 
 - **Database**: SQLite 
 - **Authentication**: Django Admin 
 
+---
+
+## 🏁 How to Run Locally
+
+```bash
+# Clone the repository
+git clone [https://github.com/yourusername/blogwebsite.git](https://github.com/Dilnavazsida/Blog_website.git)
+
+# Navigate to the project directory
+cd Blog_website\blog\blog
+
+# Create virtual environment and activate
+python -m venv venv
+# On Windows: venv\Scripts\activate
+
+# Run migrations
+python manage.py migrate
+
+# Start the server
+python manage.py runserver
+
+# Open in browser
+http://127.0.0.1:8000/
