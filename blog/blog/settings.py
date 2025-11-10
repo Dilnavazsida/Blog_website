@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-w6$!y8v64(jf7gb3j5m@_zhzi&7s^7xz=(exiej@0=1p245p*1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['dilnavaz.pythonanywhere.com', 'www.dilnavaz.pythonanywhere.com', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -80,6 +80,18 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# MYSQL
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.mysql",
+#         "NAME": "BlogWebsite",
+#         "USER": "root",
+#         "PASSWORD": "",
+#         "HOST": "127.0.0.1",
+#         "PORT": "3306",
+#     }
+# }
 
 
 # Password validation
@@ -136,3 +148,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # EMAIL_HOST_PASSWORD = "tgppocdsatzwkypq"
 
 LOGIN_URL = '/signin/'
+
+import django_heroku
+django_heroku.settings(locals())
