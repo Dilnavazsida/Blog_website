@@ -1,0 +1,5 @@
+# Ignore Django database
+db.sqlite3
+
+# Ignore collected static files
+staticfiles/
